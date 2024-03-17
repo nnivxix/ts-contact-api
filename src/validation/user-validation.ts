@@ -6,4 +6,8 @@ export class UserValidation {
 		name: z.string().min(5).max(100),
 		password: z.string().min(7).max(100),
 	});
+	static readonly LOGIN: ZodType = z.object({
+		username: z.string().min(3).max(100),
+		password: z.string().min(7).max(100),
+	});
 }

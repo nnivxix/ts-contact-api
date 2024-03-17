@@ -2,11 +2,11 @@
   "name": "ts-contact-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/main.ts",
   "scripts": {
     "test": "jest",
-    "build": "pnpx tsc",
-    "start": "node dist/index.js",
+    "build": "tsc",
+    "start": "node dist/main.js",
     "dev": "nodemon src/main.ts"
   },
   "jest": {

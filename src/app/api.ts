@@ -1,5 +1,11 @@
 import express from "express";
+import { publicApi } from "../route/api";
+import { errorMiddleware } from "../middleware/error-middleware";
 
-export const api = express()
+const api = express();
 
-api.use(express.json())
+api.use(express.json());
+api.use(publicApi);
+api.use(errorMiddleware);
+
+export default api;

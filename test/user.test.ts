@@ -1,18 +1,11 @@
 import supertest from "supertest";
 import api from "../src/app/api";
 import { logger } from "../src/app/logging";
-import { prismaClient } from "../src/app/database";
-import bcrypt from "bcrypt";
+import { RefreshUser } from "./helpers/refresh-user";
 
 describe("POST /api/users", () => {
 	afterEach(async () => {
-		await prismaClient.user.deleteMany({
-			where: {
-				username: {
-					contains: "test",
-				},
-			},
-		});
+		await RefreshUser.delete();
 	});
 	it("should reject register new user if request is invalid", async () => {
 		const response = await supertest(api).post("/api/users").send({
@@ -43,23 +36,10 @@ describe("POST /api/users", () => {
 
 describe("POST /api/users/login", () => {
 	beforeEach(async () => {
-		await prismaClient.user.create({
-			data: {
-				username: "hanasa test new",
-				name: "hanasa test new",
-				password: await bcrypt.hash("password1234", 10),
-				token: "token1234",
-			},
-		});
+		await RefreshUser.create();
 	});
 	afterEach(async () => {
-		await prismaClient.user.deleteMany({
-			where: {
-				username: {
-					contains: "test",
-				},
-			},
-		});
+		await RefreshUser.delete();
 	});
 
 	it("it should be able to login", async () => {

@@ -58,6 +58,7 @@ export class UserService {
 
 		const updateUser = await prismaClient.user.update({
 			where: {
+				id: user.id,
 				username: loginRequest.username,
 			},
 			data: {

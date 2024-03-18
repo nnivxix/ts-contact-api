@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import api from "../src/app/api";
+import server from "../src/app/server";
 import { logger } from "../src/app/logging";
 import { RefreshUser } from "./helpers/refresh-user";
 
@@ -8,7 +8,7 @@ describe("POST /api/users", () => {
 		await RefreshUser.delete();
 	});
 	it("should reject register new user if request is invalid", async () => {
-		const response = await supertest(api).post("/api/users").send({
+		const response = await supertest(server).post("/api/users").send({
 			username: "",
 			password: "",
 			name: "",
@@ -21,7 +21,7 @@ describe("POST /api/users", () => {
 	});
 
 	it("should register new user", async () => {
-		const response = await supertest(api).post("/api/users").send({
+		const response = await supertest(server).post("/api/users").send({
 			username: "hanasa test",
 			password: "test123",
 			name: "hanasa test",
@@ -43,7 +43,7 @@ describe("POST /api/users/login", () => {
 	});
 
 	it("it should be able to login", async () => {
-		const response = await supertest(api).post("/api/users/login").send({
+		const response = await supertest(server).post("/api/users/login").send({
 			username: "hanasa test new",
 			password: "password1234",
 		});
@@ -55,7 +55,7 @@ describe("POST /api/users/login", () => {
 		expect(response.body.data.token).toBeDefined();
 	});
 	it("it should be reject login user if username wrong", async () => {
-		const response = await supertest(api).post("/api/users/login").send({
+		const response = await supertest(server).post("/api/users/login").send({
 			username: "hanasa test",
 			password: "password1234",
 		});
@@ -66,7 +66,7 @@ describe("POST /api/users/login", () => {
 		expect(response.body.errors).toBeDefined();
 	});
 	it("it should be reject login user if password wrong", async () => {
-		const response = await supertest(api).post("/api/users/login").send({
+		const response = await supertest(server).post("/api/users/login").send({
 			username: "hanasa test new",
 			password: "password1234677",
 		});
@@ -87,7 +87,7 @@ describe("GET /api/user", () => {
 	});
 
 	it("should be able to get user", async () => {
-		const response = await supertest(api)
+		const response = await supertest(server)
 			.get("/api/user")
 			.set("X-API-TOKEN", "token1234");
 
@@ -97,7 +97,7 @@ describe("GET /api/user", () => {
 		expect(response.body.data.name).toBe("hanasa test new");
 	});
 	it("should be reject if token is invalid", async () => {
-		const response = await supertest(api)
+		const response = await supertest(server)
 			.get("/api/user")
 			.set("X-API-TOKEN", "token14");
 

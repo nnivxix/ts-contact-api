@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { prismaClient } from "../app/database";
-import { ResposeError } from "../error/response-error";
+import { ResponseError } from "../error/response-error";
 import {
 	LoginUserRequest,
 	RegisterUserRequest,
@@ -26,7 +26,7 @@ export class UserService {
 		});
 
 		if (totalUsersWithSameUsername != 0)
-			throw new ResposeError(400, "Username already exist");
+			throw new ResponseError(400, "Username already exist");
 
 		registerRequest.password = await bcrypt.hash(registerRequest.password, 10);
 
@@ -46,7 +46,7 @@ export class UserService {
 		});
 
 		if (!user) {
-			throw new ResposeError(401, "Username or password is wrong");
+			throw new ResponseError(401, "Username or password is wrong");
 		}
 		const checkPassword = await bcrypt.compare(
 			loginRequest.password,
@@ -54,7 +54,7 @@ export class UserService {
 		);
 
 		if (!checkPassword) {
-			throw new ResposeError(401, "Username or password is wrong");
+			throw new ResponseError(401, "Username or password is wrong");
 		}
 
 		const updateUser = await prismaClient.user.update({

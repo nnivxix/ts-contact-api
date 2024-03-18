@@ -5,7 +5,9 @@ export class RefreshUser {
 	static async delete() {
 		await prismaClient.user.deleteMany({
 			where: {
-				username: "hanasa test new",
+				username: {
+					contains: "test",
+				},
 			},
 		});
 	}

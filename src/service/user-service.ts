@@ -10,6 +10,7 @@ import {
 import { UserValidation } from "../validation/user-validation";
 import { Validation } from "../validation/validation";
 import { v4 as uuid } from "uuid";
+import { User } from "@prisma/client";
 
 export class UserService {
 	static async register(request: RegisterUserRequest): Promise<UserResponse> {
@@ -70,5 +71,9 @@ export class UserService {
 		response.token = updateUser.token!;
 
 		return response;
+	}
+
+	static async get(user: User): Promise<UserResponse> {
+		return toUserResponse(user);
 	}
 }

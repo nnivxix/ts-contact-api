@@ -77,3 +77,33 @@ describe("POST /api/users/login", () => {
 		expect(response.body.errors).toBeDefined();
 	});
 });
+
+describe("GET /api/user", () => {
+	beforeEach(async () => {
+		await RefreshUser.create();
+	});
+	afterEach(async () => {
+		await RefreshUser.delete();
+	});
+
+	it("should be able to get user", async () => {
+		const response = await supertest(api)
+			.get("/api/user")
+			.set("X-API-TOKEN", "token1234");
+
+		logger.debug(response.body);
+
+		expect(response.status).toBe(200);
+		expect(response.body.data.name).toBe("hanasa test new");
+	});
+	it("should be reject if token is invalid", async () => {
+		const response = await supertest(api)
+			.get("/api/user")
+			.set("X-API-TOKEN", "token14");
+
+		logger.debug(response.body);
+
+		expect(response.status).toBe(401);
+		expect(response.body.message).toBeDefined();
+	});
+});

@@ -7,7 +7,7 @@ server.get("/", (req, res) => {
 	const { query } = req;
 
 	res.json({
-		message: "Hello Wolrd",
+		message: "Hello World",
 		query: query,
 	});
 });

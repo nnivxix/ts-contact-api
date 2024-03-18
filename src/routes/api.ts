@@ -4,7 +4,7 @@ import { UserController } from "../controller/user-controller";
 
 const api = express.Router();
 
-api.use(authMiddleware);
+api.use("/api/user", authMiddleware);
 
 api.get("/api/user", UserController.get);
 

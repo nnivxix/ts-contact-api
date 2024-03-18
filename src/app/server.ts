@@ -5,15 +5,8 @@ import { errorMiddleware } from "../middleware/error-middleware";
 
 const server = express();
 
-server.get("/", (req, res) => {
-	res.json({
-		message: "Hello Wolrd",
-	});
-});
-
 server.use(express.json());
 server.use(auth);
 server.use(apiRoute);
 server.use(errorMiddleware);
-
 export default server;

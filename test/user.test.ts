@@ -107,3 +107,54 @@ describe("GET /api/user", () => {
 		expect(response.body.message).toBeDefined();
 	});
 });
+
+describe("PATCH /api/user", () => {
+	beforeEach(async () => {
+		await RefreshUser.create();
+	});
+	afterEach(async () => {
+		await RefreshUser.delete();
+	});
+
+	it("should be reject when user invalid input", async () => {
+		const response = await supertest(server)
+			.patch("/api/user")
+			.set("X-API-TOKEN", "token1234")
+			.send({
+				name: "",
+				password: "",
+			});
+
+		logger.debug(response.body);
+
+		expect(response.status).toBe(400);
+		expect(response.body.errors).toBeDefined();
+	});
+
+	it("should be reject when user invalid token", async () => {
+		const response = await supertest(server)
+			.patch("/api/user")
+			.set("X-API-TOKEN", "token")
+			.send({
+				name: "hanasa",
+			});
+
+		logger.debug(response.body);
+
+		expect(response.status).toBe(401);
+		expect(response.body.message).toBeDefined();
+	});
+	it("should be able update data", async () => {
+		const response = await supertest(server)
+			.patch("/api/user")
+			.set("X-API-TOKEN", "token1234")
+			.send({
+				name: "hanasa",
+			});
+
+		logger.debug(response.body);
+
+		expect(response.status).toBe(200);
+		expect(response.body.data.name).toBe("hanasa");
+	});
+});

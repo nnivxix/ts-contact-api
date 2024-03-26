@@ -7,5 +7,6 @@ const api = express.Router();
 api.use("/api/user", authMiddleware);
 
 api.get("/api/user", UserController.get);
+api.patch("/api/user", UserController.update);
 
 export default api;

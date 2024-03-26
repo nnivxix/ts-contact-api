@@ -158,3 +158,35 @@ describe("PATCH /api/user", () => {
 		expect(response.body.data.name).toBe("hanasa");
 	});
 });
+
+describe("DELETE /api/user", () => {
+	beforeEach(async () => {
+		await RefreshUser.create();
+	});
+	afterEach(async () => {
+		await RefreshUser.delete();
+	});
+
+	it("should be able to logout ", async () => {
+		const response = await supertest(server)
+			.delete("/api/user")
+			.set("X-API-TOKEN", "token1234");
+
+		const user = await RefreshUser.get();
+
+		logger.debug(response.body);
+		expect(response.status).toBe(200);
+		expect(response.body.data).toBe("Ok");
+
+		expect(user?.token).toBeNull();
+	});
+	it("should be reject to logout when token is wrong", async () => {
+		const response = await supertest(server)
+			.delete("/api/user")
+			.set("X-API-TOKEN", "token");
+
+		logger.debug(response.body);
+		expect(response.status).toBe(401);
+		expect(response.body.message).toBeDefined();
+	});
+});

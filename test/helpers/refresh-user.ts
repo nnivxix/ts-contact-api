@@ -22,4 +22,13 @@ export class RefreshUser {
 			},
 		});
 	}
+	static async get() {
+		const user = await prismaClient.user.findFirst({
+			where: {
+				username: "hanasa test new",
+			},
+		});
+
+		return user;
+	}
 }

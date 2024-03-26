@@ -8,5 +8,6 @@ api.use("/api/user", authMiddleware);
 
 api.get("/api/user", UserController.get);
 api.patch("/api/user", UserController.update);
+api.delete("/api/user", UserController.logout);
 
 export default api;
